@@ -38,7 +38,7 @@ Validate **before** writing to the database. Reject invalid transitions at the a
 ```
 PENDING → CONFIRMED → IN_PROGRESS → COMPLETED
 PENDING → CANCELLED (free cancel)
-CONFIRMED → CANCELLED (may incur fee — see §8)
+CONFIRMED → CANCELLED (may incur fee — see `booking/cancellation.md`)
 COMPLETED → DISPUTED
 ```
 
@@ -83,7 +83,7 @@ Always transition + audit atomically in a single transaction:
 
 1. **Read** the current status
 2. **Validate** the transition against the transition map
-3. **Write** the new status + create an audit log entry (see §7)
+3. **Write** the new status + create an audit log entry (see `core/audit-trails.md`)
 4. All in **one transaction** — if the audit log insert fails, the status change rolls back
 
 ---
@@ -104,6 +104,6 @@ If you need a tool to understand it, use a library.
 ### Rules
 
 - **Define terminal states explicitly** — they return `[]` from the transition map.
-- **Log every transition** — who, when, from what, to what (see §7 Audit Trails).
+- **Log every transition** — who, when, from what, to what (see `core/audit-trails.md`).
 - **Never skip states** — if a booking goes from PENDING → COMPLETED, something is wrong.
 - **Status should be an enum in your DB schema** — not a free-text string column.

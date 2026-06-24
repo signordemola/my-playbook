@@ -12,14 +12,17 @@ Clone it into any project. Your AI agent reads the rules. You ship faster.
 my-playbook/
 ├── rules/                     ← Personal coding style + preferences
 │   ├── code-style.md          ← TypeScript, naming, error handling
-│   ├── project-structure.md   ← Feature folders, file organization
-│   └── git-workflow.md        ← Commits, branches, PRs
+│   ├── project-structure.md   ← Feature folders, DAL pattern, file naming
+│   └── git-workflow.md        ← Conventional commits, branches, PRs
 │
-├── playbooks/                 ← Domain-specific deep knowledge
-│   ├── booking/               ← 22 chapters on booking platforms
-│   ├── ecommerce/             ← Shopping, inventory, checkout
-│   ├── ui-ux/                 ← Design taste, components, animations
-│   └── dashboard/             ← Admin panels, tables, RBAC
+├── playbooks/
+│   ├── core/                  ← Universal patterns (18 chapters)
+│   │   └── INDEX.md           ← Routing table for AI agents
+│   ├── booking/               ← Booking platform patterns (8 chapters)
+│   │   └── INDEX.md
+│   ├── ecommerce/             ← E-commerce patterns (outline)
+│   ├── ui-ux/                 ← Design taste + component patterns (outline)
+│   └── dashboard/             ← Admin panel patterns (outline)
 │
 ├── setup.sh                   ← One-command install into any project
 └── README.md                  ← This file
@@ -32,22 +35,28 @@ my-playbook/
 ```bash
 # From your project root:
 bash /path/to/my-playbook/setup.sh
+
+# Or download and run:
+curl -sL https://raw.githubusercontent.com/signordemola/my-playbook/main/setup.sh | bash
 ```
 
 This will:
-1. Clone the playbook into `.playbook/` in your project
-2. Append your rules to `CLAUDE.md`, `GEMINI.md`, and `AGENTS.md`
-3. Your AI agent picks them up automatically
+1. Clone the playbook into `.playbook/` (hidden folder in your project)
+2. Append your coding rules to `CLAUDE.md`, `GEMINI.md`, and `AGENTS.md`
+3. Add `.playbook/` to `.gitignore`
 
-### Use a specific playbook
+Re-running the script updates existing rules without duplication.
 
-Tell your AI agent:
+### Tell your AI agent
 
 ```
-Read .playbook/playbooks/booking/INDEX.md — follow those patterns.
+Read .playbook/playbooks/core/INDEX.md — follow those patterns.
 ```
 
-Each playbook has an `INDEX.md` that acts as a routing table — the AI reads only what's relevant to the current task.
+For booking projects:
+```
+Read .playbook/playbooks/core/INDEX.md and .playbook/playbooks/booking/INDEX.md
+```
 
 ---
 
@@ -58,27 +67,30 @@ Each playbook has an `INDEX.md` that acts as a routing table — the AI reads on
 | **What** | Your personal coding style | Domain-specific knowledge |
 | **Scope** | Every project | Only relevant projects |
 | **Examples** | "Use early returns", "No `any`" | "How to prevent double bookings" |
-| **Loaded by** | `setup.sh` → appended to agent files | Referenced on demand by INDEX.md |
+| **Loaded by** | `setup.sh` → appended to agent files | Referenced on demand via INDEX.md |
 
 ---
 
 ## Playbooks
 
-### Booking (22 chapters)
-Production patterns for service booking platforms — concurrency, payments, state machines, availability, cancellations, and more. See [playbooks/booking/INDEX.md](playbooks/booking/INDEX.md).
+### Core (18 chapters)
+Universal engineering patterns — database, security, auth, billing, events, testing, deployment, monitoring, and more. See [core/INDEX.md](playbooks/core/INDEX.md).
 
-### E-Commerce *(in progress)*
-Shopping cart, inventory management, checkout flows, shipping. See [playbooks/ecommerce/INDEX.md](playbooks/ecommerce/INDEX.md).
+### Booking (8 chapters)
+Booking-specific patterns — concurrency, state machines, availability, cancellations, deposit/balance billing, and more. See [booking/INDEX.md](playbooks/booking/INDEX.md).
 
-### UI/UX *(in progress)*
-Design taste, component patterns, dark mode, typography, animations. See [playbooks/ui-ux/INDEX.md](playbooks/ui-ux/INDEX.md).
+### E-Commerce *(outline)*
+Shopping cart, inventory, checkout, shipping. See [ecommerce/INDEX.md](playbooks/ecommerce/INDEX.md).
 
-### Dashboard *(in progress)*
-Admin panels, data tables, charts, filters, RBAC patterns. See [playbooks/dashboard/INDEX.md](playbooks/dashboard/INDEX.md).
+### UI/UX *(outline)*
+Design taste, components, dark mode, animations. See [ui-ux/INDEX.md](playbooks/ui-ux/INDEX.md).
+
+### Dashboard *(outline)*
+Admin panels, data tables, charts, RBAC. See [dashboard/INDEX.md](playbooks/dashboard/INDEX.md).
 
 ---
 
-## Tech Stack These Patterns Target
+## Tech Stack
 
 | Layer | Tool |
 |---|---|

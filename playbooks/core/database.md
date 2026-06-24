@@ -124,7 +124,7 @@ Cursor-based pagination (keyset) is constant-time regardless of page depth.
 | **Repeatable Read** | Non-repeatable reads | Medium | Financial calculations |
 | **Serializable** | All anomalies | High (retries needed) | Critical booking mutations |
 
-For most booking operations, Read Committed + targeted `SELECT FOR UPDATE` (see §1) is better than global Serializable — lock only what you need.
+For most booking operations, Read Committed + targeted `SELECT FOR UPDATE` with a targeted `FOR UPDATE` lock is better than global Serializable — lock only what you need.
 
 #### Advisory Locks
 

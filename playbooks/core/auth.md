@@ -199,7 +199,7 @@ In 2025, a **middleware bypass vulnerability** was discovered in Next.js. An att
 | **httpOnly cookies** | Better Auth handles by default — verify in production |
 | **Session expiry** | 1 day for client portals, 8 hours for admin dashboards |
 | **Role changes = re-auth** | After role update, invalidate existing sessions |
-| **Audit role changes** | Log who changed what role and when (see §7 Audit Trails) |
+| **Audit role changes** | Log who changed what role and when (see `core/audit-trails.md`) |
 | **Secret rotation** | Use `BETTER_AUTH_SECRETS` with comma-separated current + previous |
 
 ---
@@ -223,6 +223,6 @@ export async function validatePortalToken(token: string) {
 // Rules:
 // - Tokens are nanoid(21) — ~125 bits of entropy
 // - Never expose client database IDs in URLs
-// - Rate limit portal token lookups (see §11 Security)
+// - Rate limit portal token lookups (see `core/security.md`)
 // - Tokens don't expire but can be rotated by the owner
 ```

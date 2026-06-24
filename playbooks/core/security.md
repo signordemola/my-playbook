@@ -165,4 +165,4 @@ Start with a strict policy and relax as needed — not the other way around.
 - **Three-layer validation: client → server → database.** The server is the security boundary.
 - **Never log secrets, tokens, or passwords.** Even in development.
 - **Assume the client is compromised.** Derive user identity from the session, not from request parameters.
-- **Audit access to sensitive data.** Log who accessed PII, when, and from where (see §7).
+- **Audit access to sensitive data.** Log who accessed PII, when, and from where (see `core/audit-trails.md`).

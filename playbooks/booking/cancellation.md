@@ -8,10 +8,10 @@ A cancellation is a **multi-step orchestration**, not a single database update:
 1. Validate the cancellation is allowed (policy check)
 2. Calculate the fee (time-based rules)
 3. Process the refund or charge (payment provider)
-4. Update the booking status (state machine — see §2)
-5. Free the availability slot (see §6)
+4. Update the booking status (see `booking/state-machines.md`)
+5. Free the availability slot (see `booking/availability.md`)
 6. Notify the customer (email/SMS)
-7. Log the entire sequence (audit trail — see §7)
+7. Log the entire sequence (see `core/audit-trails.md`)
 ```
 
 If any step fails, the system enters an inconsistent state. Treat cancellation as a workflow, not a flag flip.
@@ -32,7 +32,25 @@ Fees increase as the cancellation gets closer to the appointment:
 
 #### Key Decisions
 
-- **What does "hours before" mean?** → Use the **business timezone**, not UTC (see §5). A 48-hour check in UTC can be 47 or 49 hours in the customer's timezone.
+- **What does "hours before" mean?** → Use the **business timezone**, not UTC (see `core/timezones.md`). A 48-hour check in UTC can be 47 or 49 hours in the customer's timezone.
+
+#### Cancellation Window Math
+
+Always calculate cancellation deadlines in the **business timezone**, not UTC:
+
+```typescript
+// ❌ DON'T: Compare in UTC — can be off by a day
+const isLate = differenceInHours(booking.startTime, new Date()) < 48
+
+// ✅ DO: Compare in the business timezone
+import { utcToZonedTime } from "date-fns-tz"
+const BUSINESS_TZ = env.BUSINESS_TIMEZONE
+const now = utcToZonedTime(new Date(), BUSINESS_TZ)
+const start = utcToZonedTime(booking.startTime, BUSINESS_TZ)
+const isLate = differenceInHours(start, now) < 48
+```
+
+**Real bug:** Cancellation fee wrongly applied at 11pm CT because `new Date()` returned UTC midnight (the next day). Client was charged $65 for a "late cancel" that was actually 25 hours away in their timezone.
 - **Is the fee based on the full price or the amount paid?** → Usually the full service price, not just the deposit.
 - **Who gets the fee — the business or the provider?** → Define this in your business model. For marketplaces, the fee may split.
 
@@ -90,7 +108,7 @@ Admins and business owners must be able to override any cancellation policy:
 
 - Waive fees for VIP customers or special circumstances (medical emergency, bereavement)
 - Issue discretionary refunds outside normal policy
-- **Every override must be logged** with the admin's identity and reason (see §7)
+- **Every override must be logged** with the admin's identity and reason (see `core/audit-trails.md`)
 - Track override frequency — excessive overrides suggest the policy itself is too strict
 
 ---
@@ -107,7 +125,7 @@ Most cancellation-related chargebacks happen because of poor communication, not 
 | **Send reminder before the deadline** | "Your free cancellation window closes in 24 hours" |
 | **Provide easy self-service cancellation** | A link in the confirmation email — don't force them to call/email support |
 
-If a dispute does occur, your audit trail (see §7) should contain:
+If a dispute does occur, your audit trail (see `core/audit-trails.md`) should contain:
 1. The policy version the customer accepted at booking time
 2. The timestamp of the cancellation request
 3. The fee calculation and how it was derived
@@ -124,7 +142,7 @@ Before applying a cancellation fee, offer rescheduling:
 - The original slot is freed for someone else
 - Limit the number of reschedules (e.g., 2 max) to prevent abuse
 
-**Rescheduling should follow the same availability rules as a new booking** (see §6). The customer can't reschedule to a slot that doesn't exist.
+**Rescheduling should follow the same availability rules as a new booking** (see `booking/availability.md`). The customer can't reschedule to a slot that doesn't exist.
 
 ---
 

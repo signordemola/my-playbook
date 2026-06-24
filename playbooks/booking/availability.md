@@ -28,7 +28,7 @@ Pre-generate concrete time windows and store them in a `slots` table:
 | Pros | Cons |
 | ---- | ---- |
 | Fast queries — `SELECT WHERE status = 'AVAILABLE'` | Storage cost for future slots |
-| Easy to lock individual slots (see §1) | Must regenerate when schedule rules change |
+| Easy to lock individual slots (see `booking/concurrency.md`) | Must regenerate when schedule rules change |
 | Simple capacity tracking per slot | Needs a background job for rolling generation |
 | Overrides are just row updates | Stale if generation job fails |
 
@@ -133,7 +133,7 @@ For capacity-based slots (classes, group events, tables):
 | Concept | How It Works |
 | ------- | ------------ |
 | **Tracking** | Each slot has a `max_capacity` and `current_count`. Booking increments count, cancellation decrements. |
-| **Enforcement** | Use an atomic operation (DB constraint or transaction) to prevent count exceeding max. Never do read-then-write — race condition (see §1). |
+| **Enforcement** | Use an atomic operation (DB constraint or transaction) to prevent count exceeding max. Never do read-then-write — race condition (see `booking/concurrency.md`). |
 | **Display** | Show "3 spots left" to create urgency, or just "Available" / "Full" for simplicity. |
 
 #### Overbooking (When Appropriate)
@@ -179,7 +179,7 @@ A resource's availability is built from layers, applied in priority order:
 **Manual overrides must propagate immediately:**
 - Staff calls in sick → block all their slots for that day
 - Notify affected customers with rebooking options
-- Log the override in the audit trail (see §7)
+- Log the override in the audit trail (see `core/audit-trails.md`)
 
 ---
 

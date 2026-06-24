@@ -6,7 +6,7 @@ Not all code deserves the same test coverage. Prioritize by business impact:
 
 | Priority | What to Test | Why | Test Type |
 | -------- | ------------ | --- | --------- |
-| **1 (Critical)** | State transitions | Prevents impossible states (see §2) | Unit |
+| **1 (Critical)** | State transitions | Prevents impossible states | Unit |
 | **2 (Critical)** | Pricing & billing calculations | One bug = wrong charges on every booking | Unit |
 | **3 (High)** | Scheduling / slot generation | Wrong dates = missed appointments | Unit + Integration |
 | **4 (High)** | Idempotency (charges, emails) | Prevents duplicate charges and notifications | Integration |
@@ -141,7 +141,7 @@ Booking creation budget: max 3 queries
 API listing endpoint budget: max 2 queries
 ```
 
-This catches N+1 regressions before they reach production (see §9).
+This catches N+1 regressions before they reach production (see `core/database.md`).
 
 ---
 

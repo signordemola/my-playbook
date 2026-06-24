@@ -114,7 +114,7 @@ Keep templates modular:
 | **Review request** | 24 hours after appointment | Medium | `email:review:{bookingId}` |
 | **Failed payment** | Payment attempt failed | High | `email:payment-failed:{paymentId}` |
 
-Every email must have an **idempotency key** (see §4) to prevent duplicate sends during retries.
+Every email must have an **idempotency key** (see `core/idempotency.md`) to prevent duplicate sends during retries.
 
 ---
 
