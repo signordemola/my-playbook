@@ -4,16 +4,18 @@ A reusable, AI-readable engineering playbook for building production-ready platf
 
 Clone it into any project. Your AI agent reads the rules. You ship faster.
 
+> **AI agents: the current date matters.** Always check the current date/time. Never research or use patterns older than 6 months. Build with the latest tools, not legacy approaches.
+
 ---
 
 ## What's Inside
 
 ```
 my-playbook/
-├── rules/                     ← Personal coding style + preferences
-│   ├── code-style.md          ← TypeScript, naming, error handling
-│   ├── project-structure.md   ← Feature folders, DAL pattern, file naming
-│   └── git-workflow.md        ← Conventional commits, branches, PRs
+├── rules/                     ← Personal coding rules + preferences
+│   ├── code-style.md          ← Karpathy + Loops + personal rules
+│   ├── project-structure.md   ← Kebab-case, code splitting
+│   └── git-workflow.md        ← Git conventions (placeholder)
 │
 ├── playbooks/
 │   ├── core/                  ← Universal patterns (18 chapters)
@@ -21,9 +23,10 @@ my-playbook/
 │   ├── booking/               ← Booking platform patterns (8 chapters)
 │   │   └── INDEX.md
 │   ├── ecommerce/             ← E-commerce patterns (outline)
-│   ├── ui-ux/                 ← Design taste + component patterns (outline)
-│   └── dashboard/             ← Admin panel patterns (outline)
+│   ├── ui-ux/                 ← UI/UX design patterns (outline)
+│   └── dashboard/             ← Admin dashboard patterns (outline)
 │
+├── learnings-template.md      ← Post-project knowledge capture template
 ├── setup.sh                   ← One-command install into any project
 └── README.md                  ← This file
 ```
@@ -41,22 +44,11 @@ curl -sL https://raw.githubusercontent.com/signordemola/my-playbook/main/setup.s
 ```
 
 This will:
-1. Clone the playbook into `.playbook/` (hidden folder in your project)
-2. Append your coding rules to `CLAUDE.md`, `GEMINI.md`, and `AGENTS.md`
-3. Add `.playbook/` to `.gitignore`
+1. Clone the playbook into `.playbook/` (gitignored)
+2. Symlink rules into the project
+3. Create `CLAUDE.md`, `GEMINI.md`, `AGENTS.md` pointing to the playbook (if they don't already exist)
 
-Re-running the script updates existing rules without duplication.
-
-### Tell your AI agent
-
-```
-Read .playbook/playbooks/core/INDEX.md — follow those patterns.
-```
-
-For booking projects:
-```
-Read .playbook/playbooks/core/INDEX.md and .playbook/playbooks/booking/INDEX.md
-```
+Re-running the script pulls the latest playbook without overwriting your files.
 
 ---
 
@@ -64,43 +56,32 @@ Read .playbook/playbooks/core/INDEX.md and .playbook/playbooks/booking/INDEX.md
 
 | | Rules | Playbooks |
 |---|---|---|
-| **What** | Your personal coding style | Domain-specific knowledge |
+| **What** | Personal coding style | Domain-specific knowledge |
 | **Scope** | Every project | Only relevant projects |
-| **Examples** | "Use early returns", "No `any`" | "How to prevent double bookings" |
-| **Loaded by** | `setup.sh` → appended to agent files | Referenced on demand via INDEX.md |
+| **Examples** | "No comments", "Kebab-case" | "How to prevent double bookings" |
+| **Loaded by** | `setup.sh` → symlinked | Referenced on demand via INDEX.md |
+
+---
+
+## Post-Project Learnings
+
+After finishing a project, AI generates a `LEARNINGS.md` using the template in `learnings-template.md`. You review it, then update the playbook with anything worth keeping. This is how the playbook grows over time.
 
 ---
 
 ## Playbooks
 
 ### Core (18 chapters)
-Universal engineering patterns — database, security, auth, billing, events, testing, deployment, monitoring, and more. See [core/INDEX.md](playbooks/core/INDEX.md).
+Universal patterns — database, security, auth, billing, events, testing, deployment, monitoring, and more. See [core/INDEX.md](playbooks/core/INDEX.md).
 
 ### Booking (8 chapters)
-Booking-specific patterns — concurrency, state machines, availability, cancellations, deposit/balance billing, and more. See [booking/INDEX.md](playbooks/booking/INDEX.md).
+Booking-specific — concurrency, state machines, availability, cancellations, deposit/balance billing. See [booking/INDEX.md](playbooks/booking/INDEX.md).
 
 ### E-Commerce *(outline)*
-Shopping cart, inventory, checkout, shipping. See [ecommerce/INDEX.md](playbooks/ecommerce/INDEX.md).
+Cart, inventory, checkout, shipping. See [ecommerce/INDEX.md](playbooks/ecommerce/INDEX.md).
 
 ### UI/UX *(outline)*
 Design taste, components, dark mode, animations. See [ui-ux/INDEX.md](playbooks/ui-ux/INDEX.md).
 
 ### Dashboard *(outline)*
-Admin panels, data tables, charts, RBAC. See [dashboard/INDEX.md](playbooks/dashboard/INDEX.md).
-
----
-
-## Tech Stack
-
-| Layer | Tool |
-|---|---|
-| Framework | Next.js 16 (App Router, Server Components) |
-| Auth | Better Auth |
-| Database | PostgreSQL (Neon) + Prisma |
-| Payments | Stripe |
-| Background Jobs | Inngest |
-| Email | Resend + React Email |
-| Cache | Upstash Redis |
-| Monitoring | Sentry + OpenTelemetry |
-| Testing | Vitest + Playwright |
-| Deployment | Vercel |
+Admin panels, data tables, RBAC. See [dashboard/INDEX.md](playbooks/dashboard/INDEX.md).

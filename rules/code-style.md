@@ -1,57 +1,35 @@
-# Code Style Rules
+# Code Style
 
-> These are my personal coding preferences. AI agents must follow these exactly.
+> These rules are non-negotiable. AI agents must follow every single one.
 
-## Language & Runtime
+## My Rules
 
-- **TypeScript** — strict mode, no `any`, no `as` casts unless truly necessary
-- **ES2015+** — arrow functions, `const`/`let` (never `var`), template literals, destructuring
-- **Node.js** — latest LTS
+- **No comments in code.** The code should be readable enough without them.
+- **One source of truth.** Every function, every business rule — defined in one place, called from everywhere. Never duplicate logic.
+- **Code splitting.** Separate concerns into dedicated folders: `types/`, `schemas/`, `actions/`, `hooks/`, etc. Readability and scalability over convenience.
+- **Don't assume. Don't guess.** If something is unclear or you're stuck, research using official docs. Never silently pick an interpretation.
+- **Plan first, code after approval.** Always present a plan before writing any code. Wait for explicit approval before implementing.
+- **Date/time awareness.** Always check the current date. Never research or reference anything older than 6 months. We are building with the latest tools — not legacy patterns.
 
-## Naming
+---
 
-- `camelCase` for variables, functions, hooks
-- `PascalCase` for components, types, interfaces, classes
-- `SCREAMING_SNAKE_CASE` for env vars and constants
-- Boolean variables: prefix with `is`, `has`, `should`, `can` — e.g., `isActive`, `hasPermission`
-- Event handlers: prefix with `handle` — e.g., `handleClick`, `handleSubmit`
-- Async functions: name describes the action — e.g., `fetchUser`, `createBooking`
+## Karpathy's 4 Principles
 
-## Functions
+1. **Think Before Coding** — State assumptions explicitly. If ambiguous, present multiple interpretations. Ask for clarification when confused. Never silently assume.
+2. **Simplicity First** — Write the minimum code necessary to solve the exact request. No speculative features, no unnecessary abstractions, no "flexibility" that wasn't asked for.
+3. **Surgical Changes** — Touch only what is strictly necessary. Do not refactor adjacent code, "improve" formatting, or clean up dead code unless it is part of the task.
+4. **Goal-Driven Execution** — Define clear, verifiable success criteria before starting. Loop until all criteria are met. Use tests-first where possible.
 
-- **Early returns** — avoid nesting beyond 2 levels. Guard clause first, happy path last.
-- **Named exports** — no default exports except Next.js pages/layouts.
-- **Small functions** — if a function is > 30 lines, it's doing too much. Extract.
-- **Pure where possible** — no side effects unless the function's purpose IS the side effect.
+---
 
-## Error Handling
+## Loop Engineering (2026)
 
-- **Server Actions return typed results** — never `throw` from Server Actions. Use `{ success, data, errors }` pattern.
-- **Exception:** `redirect()` and `notFound()` are fine — Next.js handles them.
-- **Try/catch at boundaries** — catch at the top-level handler, not deep inside business logic.
-- **Typed errors** — use discriminated unions or Zod error maps, not string messages.
+The unit of engineering in 2026 is the **loop**, not the prompt.
 
-## Validation
-
-- **Zod v4** — use top-level validators (`z.url()`, `z.email()`, `z.uuid()`)
-- **Validate on both sides** — same schema shared between client form and server action.
-- **Parse, don't validate** — use `schema.parse()` to get typed output, not manual checks.
-
-## Database (Prisma)
-
-- **Client Extensions** — not deprecated `$use` middleware.
-- **`select` over `include`** — whitelist fields. Only `include` when you need the full relation.
-- **Never call external APIs inside `$transaction`** — the lock is held until the transaction closes.
-- **Atomic operations** for shared state — no check-then-act patterns.
-
-## Imports & Organization
-
-- Group imports: 1) external packages, 2) internal modules, 3) relative files
-- No circular imports — if two files import each other, extract the shared code.
-- Co-locate related code — component, hook, types, tests in the same feature folder.
-
-## Comments
-
-- **Don't comment what the code does** — the code should be readable enough.
-- **Do comment why** — business logic context, non-obvious decisions, edge case explanations.
-- **TODO format:** `// TODO(username): description — TICKET-123`
+- **Design closed-loop systems.** Every task follows: action → evaluate → repair. The agent acts, checks the result against objective truth, and iterates until verified.
+- **Every loop needs 3 things:**
+  1. **Trigger** — what starts the loop
+  2. **Evaluation cycle** — agent checks if the goal is met after each action
+  3. **Stop condition** — guardrails that prevent infinite loops, goal drift, and runaway costs
+- **Verification is the critical step.** Never assume something works — check it. Run the test, read the output, confirm the result.
+- **The quality of the system is limited by the design of the loop, not the model.**

@@ -1,47 +1,38 @@
-# Project Structure Rules
+# Project Structure
 
-> How I organize my projects. AI agents must follow this layout.
+> How I organize my Next.js projects. AI agents must follow this layout.
 
-## Architecture
+## Naming
 
-- **Next.js 16** — App Router, Server Components by default
-- **Server Components first** — only add `"use client"` when you need interactivity
-- **Server Actions for mutations** — no API routes unless an external caller needs it (webhooks)
+- **Kebab-case everything.** Files, folders, routes — all kebab-case.
+  ```
+  ✅ booking-form/booking-form.tsx
+  ✅ use-booking.ts
+  ✅ booking-schema.ts
+  ❌ BookingForm/BookingForm.tsx
+  ❌ useBooking.ts
+  ```
 
-## Folder Layout
+## Code Splitting
+
+Split by concern, not by feature. Dedicated folders for each type of code:
 
 ```
 app/
-├── (public)/           ← Public-facing pages (landing, booking form, portal)
-├── (admin)/            ← Admin/dashboard pages (protected)
-├── api/                ← API routes (webhooks only)
-├── layout.tsx
-└── global-error.tsx
+├── (public)/             ← Public-facing pages
+├── (admin)/              ← Admin/dashboard pages
+└── api/                  ← API routes (webhooks only)
 
-lib/
-├── dal/                ← Data Access Layer — all database queries live here
-├── actions/            ← Server Actions — thin orchestration layer
-├── validations/        ← Zod schemas (shared between client + server)
-├── utils/              ← Pure utility functions
-└── constants.ts        ← App-wide constants
-
-components/
-├── ui/                 ← shadcn/ui base components
-├── shared/             ← Reusable composed components (e.g., DataTable, StatusBadge)
-└── [feature]/          ← Feature-specific components (e.g., booking-form/, dashboard/)
+types/                    ← All TypeScript types/interfaces
+schemas/                  ← All Zod validation schemas
+actions/                  ← All Server Actions
+hooks/                    ← All custom React hooks
+lib/                      ← Utility functions, helpers
+components/               ← UI components
 ```
 
-## Key Principles
+## Principles
 
-- **Feature folders** — co-locate components, hooks, types, tests by feature, not by file type.
-- **DAL pattern** — all database queries go through `lib/dal/`. No raw Prisma calls in components or actions.
-- **Actions are thin** — a Server Action validates input, calls the DAL, and returns a result. No business logic inline.
-- **One component per file** — exceptions only for tightly coupled sub-components.
-- **Barrel exports sparingly** — only for public APIs of a module. Don't barrel everything.
-
-## File Naming
-
-- Components: `PascalCase.tsx` (e.g., `BookingForm.tsx`)
-- Utils/hooks/lib: `camelCase.ts` (e.g., `formatDate.ts`, `useBooking.ts`)
-- Server Actions: `camelCase.ts` grouped by domain (e.g., `lib/actions/booking.ts`)
-- Tests: `*.test.ts` co-located next to the source file
+- **Readability first.** If someone opens a folder, they should immediately know what's inside.
+- **Scalability.** The structure should work for 10 files and 1000 files.
+- **One source of truth.** A function lives in one place. Everything else imports it.
