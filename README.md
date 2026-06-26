@@ -12,9 +12,10 @@ Clone it into any project. Your AI agent reads the rules. You ship faster.
 
 ```
 my-playbook/
-├── rules/                     ← Personal coding rules + preferences
+├── rules/                     ← Personal coding rules (symlinked into projects)
 │   ├── code-style.md          ← Karpathy + Loops + personal rules
 │   ├── project-structure.md   ← Kebab-case, code splitting
+│   ├── mistakes.md            ← Known AI mistakes to avoid (living file)
 │   └── git-workflow.md        ← Git conventions (placeholder)
 │
 ├── playbooks/
@@ -45,10 +46,11 @@ curl -sL https://raw.githubusercontent.com/signordemola/my-playbook/main/setup.s
 
 This will:
 1. Clone the playbook into `.playbook/` (gitignored)
-2. Symlink rules into the project
-3. Create `CLAUDE.md`, `GEMINI.md`, `AGENTS.md` pointing to the playbook (if they don't already exist)
+2. Symlink each rule file into the project root
+3. Create `AGENTS.md` with build/test command placeholders
+4. Symlink `CLAUDE.md` → `AGENTS.md` and `GEMINI.md` → `AGENTS.md`
 
-Re-running the script pulls the latest playbook without overwriting your files.
+Re-running pulls the latest playbook without overwriting your files.
 
 ---
 
@@ -85,3 +87,14 @@ Design taste, components, dark mode, animations. See [ui-ux/INDEX.md](playbooks/
 
 ### Dashboard *(outline)*
 Admin panels, data tables, RBAC. See [dashboard/INDEX.md](playbooks/dashboard/INDEX.md).
+
+---
+
+## Keeping Rules Effective
+
+> Research shows AI agent compliance drops sharply when rule files exceed ~200 lines.
+
+- Keep each rule file **under 50 lines** — ours are currently 36, 39, and 12 lines
+- Use the **"remove test"**: if deleting a rule wouldn't cause the AI to make a mistake, remove it
+- Update `rules/mistakes.md` whenever you notice a recurring AI behavior problem
+- Prune rules that aren't working — a stale rule file works against you
