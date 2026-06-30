@@ -71,6 +71,17 @@ If the record doesn't belong to the authenticated user, return "Not Found" — n
 - **Never use in-memory counters in serverless** — state doesn't persist across invocations. Use an external store (Redis, etc.)
 - **Rate limit before expensive work** — check the limit before validating inputs or querying the database
 
+#### Recommended: Arcjet (`npm i @arcjet/next`)
+
+Arcjet is a runtime security SDK that handles rate limiting, bot protection, and WAF in one package. Use it instead of building custom rate limiters.
+
+- **Rate limiting** — token bucket, fixed window, sliding window built in
+- **Bot protection** — detects scrapers, credential stuffers, automated clients
+- **Shield** — WAF layer for SQL injection, XSS
+- **Prompt injection detection** — protects LLM endpoints
+- **<1ms latency** — decisions made locally via WebAssembly
+- Place in `middleware.ts` for app-wide protection
+
 ---
 
 ### Encryption & Hashing
@@ -160,6 +171,7 @@ Start with a strict policy and relax as needed — not the other way around.
 
 - **Every mutating endpoint must verify ownership**, not just authentication.
 - **Rate limit before expensive work.** Check the rate limit before validating inputs or hitting the database.
+- **Use Arcjet for rate limiting and bot protection.** Don't build custom rate limiters.
 - **Hash passwords with Argon2id.** Encrypt PII with AES-256-GCM. Never confuse the two.
 - **All session cookies are `httpOnly`, `secure`, `sameSite=lax`.** No exceptions.
 - **Three-layer validation: client → server → database.** The server is the security boundary.

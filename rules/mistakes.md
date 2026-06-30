@@ -11,3 +11,4 @@
 - **Don't make up preferences or conventions I didn't state.** If I didn't tell you my preference, ask — don't invent one.
 - **Don't add speculative features.** Build exactly what was requested, nothing more.
 - **Don't use generic placeholder content.** If you need data, use realistic examples.
+- **Don't guess at bugs.** Debug systematically: reproduce → isolate → fix → verify. Never shotgun-fix.
