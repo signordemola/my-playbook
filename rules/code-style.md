@@ -4,7 +4,7 @@
 
 ## My Rules
 
-- **No comments in code.** The code should be readable enough without them.
+- **No comments in code.** The code must be readable without them.
 - **One source of truth.** Every function, every business rule — defined in one place, called from everywhere. Never duplicate logic.
 - **Code splitting.** Separate concerns into dedicated folders: `types/`, `schemas/`, `actions/`, `hooks/`, etc. Readability and scalability over convenience.
 - **Don't assume. Don't guess.** If something is unclear or you're stuck, research using official docs. Never silently pick an interpretation.

@@ -3,7 +3,6 @@
 > A living list of recurring AI agent mistakes. Add to this as you notice patterns.
 > AI agents: read this file and never make these mistakes.
 
-- **Don't add comments to code.** The code should speak for itself.
 - **Don't refactor code you weren't asked to touch.** Stay surgical.
 - **Don't research or use outdated patterns.** Always check the current date. Nothing older than 6 months.
 - **Don't guess or assume.** If unclear, research official documentation or ask.

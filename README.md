@@ -12,10 +12,11 @@ Clone it into any project. Your AI agent reads the rules. You ship faster.
 
 ```
 my-playbook/
-├── rules/                     ← Personal coding rules (symlinked into projects)
+├── rules/                     ← Personal coding rules
 │   ├── code-style.md          ← Karpathy + Loops + personal rules
 │   ├── project-structure.md   ← Kebab-case, code splitting
 │   ├── mistakes.md            ← Known AI mistakes to avoid (living file)
+│   ├── cursor-rules.md        ← Copy-paste rules for Cursor settings UI
 │   └── git-workflow.md        ← Git conventions (placeholder)
 │
 ├── playbooks/
@@ -27,30 +28,50 @@ my-playbook/
 │   ├── ui-ux/                 ← UI/UX design patterns (outline)
 │   └── dashboard/             ← Admin dashboard patterns (outline)
 │
+├── recommended-skills.md      ← Package skills to install per project
 ├── learnings-template.md      ← Post-project knowledge capture template
-├── setup.sh                   ← One-command install into any project
+├── setup.sh                   ← One-command install (supports --global and --force)
 └── README.md                  ← This file
 ```
 
 ## Quick Start
 
-### Install into a project
+### Project setup
 
 ```bash
-# From your project root:
 bash /path/to/my-playbook/setup.sh
-
-# Or download and run:
-curl -sL https://raw.githubusercontent.com/signordemola/my-playbook/main/setup.sh | bash
 ```
 
-This will:
-1. Clone the playbook into `.playbook/` (gitignored)
-2. Symlink each rule file into the project root
-3. Create `AGENTS.md` with build/test command placeholders
-4. Symlink `CLAUDE.md` → `AGENTS.md` and `GEMINI.md` → `AGENTS.md`
+This clones `.playbook/` into your project and creates `AGENTS.md`.
+
+### Global rules (all AI tools)
+
+```bash
+bash /path/to/my-playbook/setup.sh --global
+```
+
+This also installs your non-negotiable rules into:
+
+| Tool | Global Config |
+|---|---|
+| **Claude Code** | `~/.claude/CLAUDE.md` |
+| **Gemini CLI** | `~/.gemini/GEMINI.md` |
+| **OpenAI Codex** | `~/.codex/AGENTS.md` |
+| **Cursor** | Manual — paste `rules/cursor-rules.md` into Settings → Rules for AI |
+
 
 Re-running pulls the latest playbook without overwriting your files.
+
+---
+
+## Framework Skills (Don't Duplicate These)
+
+Some tools ship their own AI-readable docs. Don't write custom rules for them — reference the built-in docs instead.
+
+| Tool | Built-in Docs | How to Use |
+|---|---|---|
+| **Next.js 16+** | `node_modules/next/dist/docs/` | Already referenced in generated `AGENTS.md` |
+| **shadcn/ui** | Official SKILL.md | `npx skills add https://github.com/shadcn-ui/ui --skill shadcn` |
 
 ---
 
@@ -61,40 +82,21 @@ Re-running pulls the latest playbook without overwriting your files.
 | **What** | Personal coding style | Domain-specific knowledge |
 | **Scope** | Every project | Only relevant projects |
 | **Examples** | "No comments", "Kebab-case" | "How to prevent double bookings" |
-| **Loaded by** | `setup.sh` → symlinked | Referenced on demand via INDEX.md |
+| **Loaded by** | AI reads `.playbook/rules/` | AI reads `INDEX.md` on demand |
 
 ---
 
 ## Post-Project Learnings
 
-After finishing a project, AI generates a `LEARNINGS.md` using the template in `learnings-template.md`. You review it, then update the playbook with anything worth keeping. This is how the playbook grows over time.
-
----
-
-## Playbooks
-
-### Core (18 chapters)
-Universal patterns — database, security, auth, billing, events, testing, deployment, monitoring, and more. See [core/INDEX.md](playbooks/core/INDEX.md).
-
-### Booking (8 chapters)
-Booking-specific — concurrency, state machines, availability, cancellations, deposit/balance billing. See [booking/INDEX.md](playbooks/booking/INDEX.md).
-
-### E-Commerce *(outline)*
-Cart, inventory, checkout, shipping. See [ecommerce/INDEX.md](playbooks/ecommerce/INDEX.md).
-
-### UI/UX *(outline)*
-Design taste, components, dark mode, animations. See [ui-ux/INDEX.md](playbooks/ui-ux/INDEX.md).
-
-### Dashboard *(outline)*
-Admin panels, data tables, RBAC. See [dashboard/INDEX.md](playbooks/dashboard/INDEX.md).
+After finishing a project, AI generates a `LEARNINGS.md` using `learnings-template.md`. You review it, then update the playbook. This is how the playbook grows.
 
 ---
 
 ## Keeping Rules Effective
 
-> Research shows AI agent compliance drops sharply when rule files exceed ~200 lines.
+> AI agent compliance drops when rule files exceed ~200 lines.
 
-- Keep each rule file **under 50 lines** — ours are currently 36, 39, and 12 lines
-- Use the **"remove test"**: if deleting a rule wouldn't cause the AI to make a mistake, remove it
-- Update `rules/mistakes.md` whenever you notice a recurring AI behavior problem
-- Prune rules that aren't working — a stale rule file works against you
+- Keep each rule file **under 50 lines**
+- Use the **"remove test"**: if deleting a rule wouldn't cause a mistake, remove it
+- Update `rules/mistakes.md` when you notice recurring AI problems
+- Prune rules that aren't working

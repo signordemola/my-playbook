@@ -33,6 +33,6 @@ components/               ← UI components
 
 ## Principles
 
-- **Readability first.** If someone opens a folder, they should immediately know what's inside.
-- **Scalability.** The structure should work for 10 files and 1000 files.
+- **Readability first.** If someone opens a folder, they must immediately know what's inside.
+- **Scalability.** The structure must work for 10 files and 1000 files.
 - **One source of truth.** A function lives in one place. Everything else imports it.
