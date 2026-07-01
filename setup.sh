@@ -82,14 +82,38 @@ else
   echo "📋 Created .gitignore with .playbook/"
 fi
 
-# Copy workflows
+# ─── Copy workflows to all AI tool paths ──────────────────────────
 WORKFLOWS_SRC="$PLAYBOOK_DIR/workflows"
-WORKFLOWS_DST="$PROJECT_DIR/.agents/workflows"
 
 if [ -d "$WORKFLOWS_SRC" ]; then
-  mkdir -p "$WORKFLOWS_DST"
-  cp -u "$WORKFLOWS_SRC"/*.md "$WORKFLOWS_DST/" 2>/dev/null
-  echo "📂 Copied workflows to .agents/workflows/"
+  # Antigravity: .agents/workflows/
+  mkdir -p "$PROJECT_DIR/.agents/workflows"
+  cp -u "$WORKFLOWS_SRC"/*.md "$PROJECT_DIR/.agents/workflows/" 2>/dev/null
+  echo "📂 Antigravity  → .agents/workflows/"
+
+  # Claude Code: .claude/commands/
+  mkdir -p "$PROJECT_DIR/.claude/commands"
+  cp -u "$WORKFLOWS_SRC"/*.md "$PROJECT_DIR/.claude/commands/" 2>/dev/null
+  echo "📂 Claude Code  → .claude/commands/"
+
+  # Cursor: .cursor/rules/ (convert .md to .mdc with alwaysApply: false)
+  mkdir -p "$PROJECT_DIR/.cursor/rules"
+  for f in "$WORKFLOWS_SRC"/*.md; do
+    basename=$(basename "$f" .md)
+    target="$PROJECT_DIR/.cursor/rules/$basename.mdc"
+    if [ ! -f "$target" ] || [ "$f" -nt "$target" ]; then
+      desc=$(grep "^description:" "$f" | head -1 | sed 's/description: *//')
+      {
+        echo "---"
+        echo "description: \"$desc\""
+        echo "alwaysApply: false"
+        echo "---"
+        echo ""
+        sed '1,/^---$/{ /^---$/,/^---$/d }' "$f"
+      } > "$target"
+    fi
+  done
+  echo "📂 Cursor       → .cursor/rules/ (.mdc)"
 fi
 
 # Create AGENTS.md
