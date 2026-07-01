@@ -12,3 +12,4 @@
 - **Don't add speculative features.** Build exactly what was requested, nothing more.
 - **Don't use generic placeholder content.** If you need data, use realistic examples.
 - **Don't guess at bugs.** Debug systematically: reproduce → isolate → fix → verify. Never shotgun-fix.
+- **Don't use suppression comments** (`# type: ignore`, `// @ts-expect-error`, `// eslint-disable`). Fix the underlying issue instead.

@@ -51,6 +51,16 @@ else
   echo "📋 Created .gitignore with .playbook/"
 fi
 
+# ─── Copy workflows ───────────────────────────────────────────────
+WORKFLOWS_SRC="$PLAYBOOK_DIR/workflows"
+WORKFLOWS_DST="$PROJECT_DIR/.agents/workflows"
+
+if [ -d "$WORKFLOWS_SRC" ]; then
+  mkdir -p "$WORKFLOWS_DST"
+  cp -u "$WORKFLOWS_SRC"/*.md "$WORKFLOWS_DST/" 2>/dev/null
+  echo "📂 Copied workflows to .agents/workflows/"
+fi
+
 # ─── Create AGENTS.md ─────────────────────────────────────────────
 AGENTS_FILE="$PROJECT_DIR/AGENTS.md"
 
